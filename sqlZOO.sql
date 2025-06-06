@@ -752,7 +752,7 @@ FROM (SELECT constituency, party,
       AND constituency BETWEEN 'S14000021' AND 'S14000026') AS ge_rank
 WHERE rank = '1';
 
-----------*********Window_LAG***********
+----------*********COVID 19***********
 1
 --Modificar la consulta para mostrar datos de España
 SELECT name, DAY(whn),
