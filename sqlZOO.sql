@@ -636,6 +636,80 @@ SELECT name, CASE WHEN dept IN (1,2) THEN 'Sci'
   ELSE 'None' END
  FROM teacher
 
+ --------------******* Numeric Examplesl**********
+
+ 1
+ --En el ejemplo se muestra el número de personas que respondieron para:
+--Pregunta 1
+--en la Universidad Napier de Edimburgo
+--estudiando '(8) Ciencias de la Computación'
+SELECT A_STRONGLY_AGREE
+  FROM nss
+ WHERE question='Q01'
+   AND institution='Edinburgh Napier University'
+   AND subject='(8) Computer Science'
+2
+--Muestre la institución y la materia donde el puntaje es de al menos 100 para la pregunta 15.
+SELECT institution,subject
+  FROM nss
+ WHERE question='Q15'
+   AND score>=100
+3
+--Muestre la institución y la puntuación en la que la puntuación de '(8) 
+--Ciencias de la Computación' es inferior a 50 para la pregunta 'Q15'
+SELECT institution, score
+  FROM nss
+ WHERE question='Q15'
+   AND subject='(8) Computer Science'
+   AND score<50
+4
+--Muestre la asignatura y el número total de estudiantes que 
+--respondieron a la pregunta 22 para cada una de las asignaturas 
+--'(8) Ciencias de la Computación' y '(H) Artes Creativas y Diseño'.
+SELECT subject, SUM(response)
+FROM nss
+WHERE question='Q22'
+AND subject IN ('(8) Computer Science', '(H) Creative Arts and Design')
+GROUP BY subject
+5.
+--Muestre la asignatura y el número total de estudiantes que A_STRONGLY_AGREE 
+--a la pregunta 22 para cada una de las asignaturas '(8) Ciencias de la Computación' y '(H)
+--Artes Creativas y Diseño'.
+SELECT subject, SUM(A_STRONGLY_AGREE * response/ 100) 
+FROM nss
+WHERE question='Q22'
+AND subject IN ('(8) Computer Science', '(H) Creative Arts and Design')
+GROUP BY subject
+6
+--Show the percentage of students who A_STRONGLY_AGREE to question 22 
+--for the subject '(8) Computer Science' show the same figure for the subject '(H) Creative Arts and Design'.
+SELECT subject, ROUND(SUM(A_STRONGLY_AGREE * response) / SUM(response), 0) 
+FROM nss
+WHERE question='Q22'
+AND subject IN ('(8) Computer Science', '(H) Creative Arts and Design')
+GROUP BY subject
+7
+--Muestre los puntajes promedio de la pregunta 'Q22' 
+--para cada institución que incluya 'Manchester' en el nombre.
+SELECT institution,
+ROUND(SUM(score * response) / SUM(response), 0)
+FROM nss
+WHERE question='Q22'
+AND institution LIKE '%Manchester%'
+GROUP BY institution
+ORDER BY institution
+8
+--Muestre la institución, el tamaño total de la muestra y el número de 
+--estudiantes de informática de las instituciones de Manchester para 'Q01'.
+SELECT 
+institution,
+SUM(sample) AS total_sample_size,
+SUM(CASE WHEN subject = '(8) Computer Science' THEN sample ELSE 0 END) AS comp_sci_students
+FROM nss
+WHERE question='Q01'
+AND institution LIKE '%Manchester%'
+GROUP BY institution
+
 
 
 
