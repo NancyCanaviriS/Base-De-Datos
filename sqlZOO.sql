@@ -573,5 +573,71 @@ SELECT DISTINCT name FROM casting
 		WHERE actor.name = 'Art Garfunkel'
 )
 
+ --------------***Using_Null**********
+
+ 1
+ --Enumere los profesores que tienen NULL para su departamento.
+SELECT name FROM teacher
+  WHERE dept IS NULL
+
+2
+--Nótese que el INNER JOIN pasa por alto a los profesores 
+--sin departamento y a los departamentos sin profesor.
+SELECT teacher.name, dept.name
+ FROM teacher INNER JOIN dept
+           ON (teacher.dept=dept.id)
+
+3
+--Utilice un JOIN diferente para que se enumeren todos los profesores.
+SELECT teacher.name, dept.name
+ FROM teacher LEFT JOIN dept
+           ON (teacher.dept=dept.id)
+
+4
+--Utilice un JOIN diferente para que se enumeren todos los departamentos.
+SELECT teacher.name, dept.name
+ FROM teacher RIGHT JOIN dept
+           ON (teacher.dept=dept.id)
+
+5
+--Utilice COALESCE para imprimir el número de móvil. Utilice el número '07986 444 2266'
+--si no se proporciona ningún número. Muestre el nombre del profesor y el número de teléfono móvil o 
+--'07986 444 2266'
+SELECT teacher.name, COALESCE(teacher.mobile,'07986 444 2266') 
+ FROM teacher
+6
+--Utilice la función COALESCE y LEFT JOIN para imprimir el nombre del profesor 
+--y el nombre del departamento. Utilice la cadena 'Ninguno' donde no haya ningún departamento.
+SELECT teacher.name, COALESCE(dept.name,'None') FROM teacher
+  LEFT JOIN dept ON teacher.dept = dept.id
+
+7
+--Utilice COUNT para mostrar el número de profesores y el número de teléfonos móviles.
+SELECT COUNT(name), COUNT(mobile) 
+FROM teacher
+8
+--Utilice COUNT y GROUP BY dept.name para mostrar cada departamento y el número de empleados. 
+--Utilice RIGHT JOIN para asegurarse de que el departamento de ingeniería aparece en la lista.
+SELECT dept.name, COUNT(teacher.dept) FROM teacher
+  RIGHT JOIN dept ON dept.id = teacher.dept
+  GROUP BY dept.name
+9
+--Use CASE para mostrar el nombre de cada profesor seguido de 'Sci' si el
+--profesor está en el departamento 1 o 2 y 'Art' en caso contrario.
+SELECT name, CASE WHEN dept IN (1,2) THEN 'Sci'
+      ELSE 'Art' END
+ FROM teacher
+10
+--Use CASE para mostrar el nombre de cada profesor seguido de 'Sci' si el 
+--profesor está en el departamento 1 o 2, muestre 'Arte' si el departamento del profesor es 3 y 
+--'Ninguno' en caso contrario.
+SELECT name, CASE WHEN dept IN (1,2) THEN 'Sci'
+   WHEN dept = 3 THEN 'Art'
+  ELSE 'None' END
+ FROM teacher
+
+
+
+
 
 
