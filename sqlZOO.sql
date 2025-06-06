@@ -165,12 +165,14 @@ WHERE capital like concat('%',name,'%') and capital >name
     FROM world
     WHERE area> 3000000 xor population> 250000000
 	9
-	--
+	--Muestre el y en millones y el GDP en miles de millones para los países de la 'South America'.
+	--Utilice la función REDONDEAR para mostrar los valores con dos decimales. name-population-continent
+		select name,round(population/1000000,2) ,round(GDP/1000000000,2)
+    from world
+	where continent = 'South America'
 	10
-	--
-	11
-	--
-	12
-	--
-	13
-	--
+	--Muestra el GDP per cápita de aquellos países con un PIB de al menos un billón (1000000000000; es decir, 12 ceros). 
+	--Redondee este valor al 1000 más cercano. name
+	SELECT name, round(GDP/population,-3) 
+    FROM world
+    WHERE gdp>= 1000000000000
