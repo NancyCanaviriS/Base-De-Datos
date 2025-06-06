@@ -266,3 +266,78 @@ SELECT winner, subject
   FROM nobel
  WHERE yr=1984
  ORDER BY subject in ('Chemistry','Physics'), subject, winner
+
+ --------------***SELECT within SELECT*****
+ 1
+ --Enumere el nombre de cada país en el que la población es mayor que la de "Rusia".
+SELECT name FROM world
+  WHERE population >
+     (SELECT population FROM world
+      WHERE name='Russia')
+2
+--Muestra los países de Europa con un PIB per cápita superior al 'United Kingdom'.
+SELECT name FROM world
+  WHERE continent = 'Europe'
+    AND gdp/population > (SELECT gdp/population
+                            FROM world
+                           WHERE name = 'United Kingdom')
+3
+--Enumere el nombre y el continente de los países en los continentes que 
+--contienen Argentina o Australia. Ordenar por nombre del país.
+SELECT name, continent FROM world
+  WHERE continent IN (SELECT continent FROM world
+                        WHERE name IN ('Argentina','Australia'))
+  ORDER BY name
+4
+--¿Qué país tiene una población mayor que la del Reino Unido pero menor que la de Alemania?
+--Mostrar el nombre y la población.
+SELECT name, population
+ FROM world
+  WHERE population > (SELECT population FROM world
+                        WHERE name = 'United Kingdom')
+    AND population < (SELECT population FROM world
+                        WHERE name = 'Germany')
+5
+--Alemania (con una población aproximada de 80 millones de habitantes) tiene la mayor población de 
+--los países de Europa. Austria (8,5 millones de habitantes) tiene el 11% de la población de Alemania.
+SELECT name, CONCAT(ROUND(100*population/(SELECT population FROM world
+                          WHERE name = 'Germany')),'%')
+             FROM world 
+			 WHERE continent = 'Europe'
+6
+--¿Qué países tienen un PIB superior al de todos los países de Europa? [Dé solo el nombre.] 
+--(Algunos países pueden tener valores de PIB NULL)
+SELECT name FROM world
+  WHERE gdp > ALL(SELECT gdp FROM world
+                   WHERE gdp > 0 AND continent = 'Europe')
+7
+--Encuentre el país más grande (por área) en cada continente, muestre el continente, el nombre y el área:
+--El ejemplo anterior se conoce como subconsulta correlacionada o sincronizada.
+SELECT continent, name, area FROM world x
+  WHERE area >= ALL
+    (SELECT area FROM world y
+        WHERE y.continent=x.continent
+          AND area>0)
+8
+--Enumere cada continente y el nombre del país que aparece primero en orden alfabético.
+SELECT continent, name FROM world x
+  WHERE name <= ALL
+    (SELECT name FROM world y
+        WHERE y.continent=x.continent)
+9
+--Encuentra los continentes donde todos los países tienen una población <= 25000000.
+--A continuación, busca los nombres de los países asociados a estos continentes. 
+--Mostrar nombre, continente y población.
+SELECT name, continent, population FROM world x
+  WHERE 25000000 >= ALL(SELECT population
+	                FROM world y
+		        WHERE x.continent = y.continent
+                        AND y.population>0);
+10
+--Algunos países tienen poblaciones más de tres veces superiores a la de 
+--todos sus vecinos (en el mismo continente). Da los países y continentes.
+SELECT name, continent FROM world x
+  WHERE population >= ALL(SELECT population*3
+                         FROM world y
+                         WHERE x.continent = y.continent
+                         and y.name != x.name)
