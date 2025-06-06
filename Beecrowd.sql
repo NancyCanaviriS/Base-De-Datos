@@ -1,6 +1,6 @@
 --************Solucion de beecrowd Talent**********
 
-				-->>NIVEL 1
+--*******************NIVEL 1********************
 
 --Customer Address
 SELECT 
@@ -42,7 +42,7 @@ FROM account;
 SELECT REPLACE(name, 'H1', 'X')
 FROM virus;
 
-				-->>NIVEL 2
+		--***************NIVEL 2*************************
 
 ---Under 10 or Greater Than 100
 SELECT id,name
@@ -154,7 +154,7 @@ ORDER BY population asc
 LIMIT 1 OFFSET 1)
 order by city_name desc
 
-				-->>NIVEL 3
+	      --*************NIVEL 3********************
 
 ---Categories
 SELECT
@@ -224,7 +224,7 @@ GROUP BY amount -- or most_frequent_value
 ORDER BY COUNT(*) DESC
 LIMIT 1;
 
---***************NIVEL 4**************
+--*************************NIVEL 4************************
 
 ---Basic Select
 SELECT name FROM customers WHERE LOWER(state) = 'rs' ;
@@ -331,7 +331,7 @@ LEFT JOIN trabalha
 WHERE trabalha.cpf_emp IS NULL
 ORDER BY empregados.cpf;
 
---****************NIVEL 5**************
+--****************************NIVEL 5*******************
 
 ---September Rentals
 SELECT
@@ -410,7 +410,7 @@ INNER JOIN categories
 GROUP BY categories.id
 ORDER BY categories.name;
 
----*****************NIVEL 6****************
+---*****************************NIVEL 6***************************
 ---Lawyers
 WITH average_customers AS (
 	SELECT 'Average' as name,
