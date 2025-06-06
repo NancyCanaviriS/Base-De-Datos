@@ -154,6 +154,78 @@ ORDER BY population asc
 LIMIT 1 OFFSET 1)
 order by city_name desc
 
+				-->>NIVEL 3
+
+---Categories
+SELECT
+    p.id,
+    p.name
+FROM
+    products AS p
+    INNER JOIN categories AS c
+    ON p.id_categories = c.id
+WHERE LOWER(c.name) LIKE 'super%';
+
+---Average Value of Products
+SELECT ROUND(AVG(price), 2)
+FROM products;
+
+---Imported Products
+SELECT
+    products.name,
+    providers.name,
+    categories.name
+FROM products
+INNER JOIN providers
+    ON products.id_providers = providers.id
+INNER JOIN categories
+    ON products.id_categories = categories.id
+WHERE providers.name = 'Sansul SA'
+    AND categories.name = 'Imported';
+
+---Orders in First Half
+SELECT
+    customers.name,
+    orders.id
+FROM orders
+INNER JOIN customers
+    ON orders.id_customers = customers.id
+WHERE EXTRACT(MONTH FROM orders.orders_date) BETWEEN 1 AND 6 
+	AND EXTRACT(YEAR FROM orders.orders_date) = 2016;
+
+---Amounts Between 10 and 20
+SELECT products.name
+FROM products
+INNER JOIN providers
+    ON products.id_providers = providers.id
+WHERE products.amount BETWEEN 10 AND 20
+    AND providers.name LIKE 'P%';
+
+---Number of Cities per Customers
+SELECT COUNT(DISTINCT city)
+FROM customers;
+
+---Number of Characters
+SELECT name, char_length(name) AS length
+FROM people
+ORDER BY length DESC;
+
+---Taxes
+SELECT
+    name,
+    ROUND((salary * 0.1), 2) as tax
+FROM people
+WHERE salary > 3000;
+
+---Most Frequent
+SELECT amount as most_frequent_value
+FROM value_table
+GROUP BY amount -- or most_frequent_value
+ORDER BY COUNT(*) DESC
+LIMIT 1;
+
+---
+
 
 
 
