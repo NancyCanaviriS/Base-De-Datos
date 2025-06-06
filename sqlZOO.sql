@@ -341,3 +341,237 @@ SELECT name, continent FROM world x
                          FROM world y
                          WHERE x.continent = y.continent
                          and y.name != x.name)
+
+  --------------***SUM and COUNT*****
+  1
+  --world(name, continent, area, population, gdp)
+SELECT SUM(population)
+FROM world
+2
+--Enumere todos los continentes, solo una vez cada uno.
+SELECT DISTINCT continent FROM world
+3
+--Da el GDP total de África
+SELECT SUM(gdp) FROM world
+  WHERE continent = 'Africa'
+
+4
+--¿Cuántos países tienen una superficie de al menos 1000000?
+SELECT COUNT(name) FROM world
+  WHERE area >= 1000000
+5
+--¿Cuál es la población total de ('Estonia', 'Letonia', 'Lituania')
+SELECT SUM(population) FROM world
+  WHERE name IN ('Estonia','Latvia','Lithuania')
+6
+--Para cada continente, muestre el continente y el número de países.
+SELECT continent, COUNT(continent ) 
+FROM world
+GROUP BY continent
+7
+--Para cada continente, muestre el continente y el número 
+--de países con poblaciones de al menos 10 millones.
+SELECT continent, COUNT(name) FROM world
+  WHERE population > 10000000
+  GROUP BY continent
+8
+--Enumere los continentes que tienen una población
+--total de al menos 100 millones.
+SELECT continent FROM world
+  GROUP BY continent
+  HAVING SUM(population) > 100000000
+
+ --------------***JOIN*****
+ 1
+ --Modifícalo para que muestre el matchid y el nombre del jugador de todos los goles marcados por Alemania. 
+ --Para identificar a los jugadores alemanes, comprueba: teamid = 'GER'
+SELECT matchid, player FROM goal
+  WHERE teamid = 'GER'
+2
+--Observe que la columna de la tabla corresponde a la columna de la tabla. 
+--Podemos buscar información sobre el juego 1012 encontrando esa fila en la mesa de juego.
+SELECT id,stadium,team1,team2
+  FROM game
+  WHERE id = 1012
+3
+--Modifícalo para mostrar el jugador, el teamid, el estadio y la fecha de cada portería alemana.
+SELECT player, teamid, stadium, mdate
+  FROM game JOIN goal ON (id=matchid)
+  WHERE teamid = 'GER'
+4
+--Utilice el mismo que en la pregunta anterior. JOIN
+SELECT team1, team2, player FROM game
+  JOIN goal ON (id=matchid)
+  WHERE player LIKE 'Mario%'
+5
+--La tabla da detalles de cada equipo nacional, incluido el entrenador. Puedes usar la 
+--frase eteamJOINgoaleteamgoal JOIN eteam on teamid=id
+SELECT player, teamid, coach, gtime
+  FROM goal
+  JOIN eteam on (teamid=id)
+ WHERE gtime<=10
+ 6
+ --Enumere las fechas de los partidos y el nombre del equipo en 
+ --el que 'Fernando Santos' fue el entrenador del equipo1.
+SELECT mdate,teamname FROM game
+  JOIN eteam ON (team1 = eteam.id)
+  WHERE coach = 'Fernando Santos'
+7
+--Enumera el jugador por cada gol marcado en 
+--un partido en el que el estadio era 'National Stadium, Warsaw'
+SELECT player FROM goal
+  JOIN game ON (matchid = id)
+  WHERE stadium = 'National Stadium, Warsaw'
+8
+--En su lugar, muestra el nombre de todos los jugadores 
+--que marcaron un gol contra Alemania.
+SELECT DISTINCT player
+  FROM game JOIN goal ON matchid = id
+    WHERE (team1= 'GER' OR team2='GER')
+    AND teamid != 'GER'
+9
+--Muestra el nombre del equipo y el número total de goles marcados.
+SELECT teamname, COUNT(*)
+  FROM eteam JOIN goal ON id=teamid
+ GROUP BY teamname
+10
+--Muestra el estadio y el número de goles marcados en cada estadio.
+SELECT stadium, COUNT(*) FROM goal
+  JOIN game ON (matchid = id)
+  GROUP BY stadium
+12
+--Para cada partido en el que haya marcado 'GER', muestra el matchid, 
+--la fecha del partido y el número de goles marcados por 'GER'
+SELECT matchid, mdate, COUNT(*) FROM goal
+  JOIN game ON (matchid=id)
+  WHERE teamid = 'GER'
+  GROUP BY matchid, mdate
+13
+--Observe que en la consulta dada se enumeran todos los objetivos.
+--Si fue un gol de equipo1, entonces aparece un 1 en score1, de lo contrario, hay un 0. 
+--Podrías sumar esta columna para obtener un recuento de los goles marcados por team1.
+--Ordena tu resultado por mdate, matchid, team1 y team2.
+SELECT DISTINCT mdate, team1,
+	SUM(CASE WHEN teamid=team1 THEN 1 ELSE 0 END) score1,
+    team2,
+    SUM(CASE WHEN teamid=team2 THEN 1 ELSE 0 END) score2
+FROM game
+LEFT JOIN goal ON game.id = goal.matchid
+GROUP BY id, mdate, team1, team2
+ORDER BY mdate, matchid, team1, team2
+
+ --------------***More JOIN operations**********
+ 1
+ --Enumere las películas en las que el año es 1962 [Mostrar identificación, título]
+SELECT id, title
+ FROM movie
+ WHERE yr=1962
+
+2
+--Regala el año de 'Ciudadano Kane'.
+SELECT yr
+  FROM movie
+  WHERE title = 'Citizen Kane'
+
+3
+--Haga una lista de todas las películas de Star Trek, incluya el id, el título y 
+--el año (todas estas películas incluyen las palabras Star Trek en el título). Ordene los resultados por año.
+SELECT id, title, yr FROM movie
+  WHERE title LIKE '%Star Trek%'
+  ORDER BY yr
+4
+--¿Qué número de identificación tiene el actor 'Glenn Close'?
+SELECT id FROM actor
+  WHERE name = 'Glenn Close'
+
+5
+--¿Cuál es la identidad de la película 'Casablanca'?
+SELECT id FROM movie
+  WHERE title = 'Casablanca'
+
+6
+--Obtén la lista de actores de 'Casablanca'.
+--¿Qué es una lista de reparto?
+--Use movieid=11768, (o cualquier valor que haya obtenido de la pregunta anterior)
+SELECT name FROM casting JOIN actor ON (id=actorid)
+  WHERE movieid=11768
+
+7
+--Obtén la lista de actores de la película 'Alien'
+SELECT name FROM casting
+  JOIN actor ON (actor.id=actorid)
+  JOIN movie ON (movie.id=movieid)
+  WHERE title = 'Alien'
+
+8
+--Listado de las películas en las que ha aparecido 'Harrison Ford'
+SELECT title FROM casting
+  JOIN movie ON (movie.id = movieid)
+  JOIN actor ON (actor.id = actorid)
+  WHERE name = 'Harrison Ford'
+
+9
+--Enumera las películas en las que ha aparecido 'Harrison Ford', pero no 
+--en el papel protagonista. [Nota: el campo ord del casting da la posición del actor.
+--Si ord=1 entonces este actor está en el papel protagónico]
+SELECT title FROM casting
+  JOIN movie ON (movie.id = movieid)
+  JOIN actor ON (actor.id = actorid)
+  WHERE name = 'Harrison Ford'  AND ord > 1
+
+10
+--Enumere las películas junto con la estrella principal de todas las películas de 1962.
+SELECT title, name FROM casting
+  JOIN movie ON (movie.id = movieid)
+  JOIN actor ON (actor.id = actorid)
+  WHERE yr = 1962 and ord = 1
+12
+--Enumera el título de la película y el actor principal de todas 
+--las películas en las que actuó 'Julie Andrews'.
+SELECT title, name FROM casting
+  JOIN movie ON movie.id = movieid
+  JOIN actor ON actor.id = actorid
+WHERE ord = 1
+	AND movie.id IN
+	(SELECT movie.id FROM movie
+	   JOIN casting ON movie.id = movieid
+	   JOIN actor ON actor.id = actorid
+           WHERE actor.name = 'Julie Andrews')
+
+13
+--Obtén una lista, en orden alfabético, de los actores que han tenido 
+--al menos 15 papeles protagónicos.
+SELECT DISTINCT name FROM casting
+  JOIN movie ON movie.id = movieid
+  JOIN actor ON actor.id = actorid
+  WHERE actorid IN (
+	SELECT actorid FROM casting
+	  WHERE ord = 1
+	  GROUP BY actorid
+	  HAVING COUNT(actorid) >= 15)
+ORDER BY name
+
+14
+--Enumere las películas estrenadas en el año 1978 ordenadas por el número de actores en el elenco, luego por título.
+SELECT title, COUNT(actorid) AS num_actors
+FROM casting
+JOIN movie ON movieid = movie.id
+WHERE yr = 1978
+GROUP BY movieid, title
+ORDER BY COUNT(actorid) DESC, title;
+
+15
+--Haz una lista de todas las personas que han trabajado con 'Art Garfunkel'.
+SELECT DISTINCT name FROM casting
+  JOIN actor ON actorid = actor.id
+  WHERE name != 'Art Garfunkel'
+	AND movieid IN (
+		SELECT movieid
+		FROM movie
+		JOIN casting ON movieid = movie.id
+		JOIN actor ON actorid = actor.id
+		WHERE actor.name = 'Art Garfunkel'
+)
+
+
+
