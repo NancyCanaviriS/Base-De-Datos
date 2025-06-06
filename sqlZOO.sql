@@ -122,4 +122,55 @@ FROM world
 WHERE capital like concat('%',name,'%') and capital >name
 
   --------------*** SELECT from World*****
-
+   1
+  --Observe el resultado de ejecutar este comando SQL para mostrar el nombre, el continente y la población de todos los países.
+   SELECT name, continent,
+   population FROM world
+   2
+  --Muestre el nombre de los países que tienen una población de al menos 200 millones de habitantes. 200 millones es 200000000, hay ocho ceros.
+  SELECT name 
+  FROM world
+  WHERE population >= 200000000
+  3
+   --Give the and the per capita GDP países con una población de al menos 200 millones. namepopulation
+    SELECT name, GDP/population 
+    FROM world
+    WHERE population >= 200000000
+   4
+   --Mostrar el y en millones para los países de la 'South America'. 
+   --Divida la población por 1000000 para obtener la población en millones. name-population-
+       SELECT name, population/1000000
+    FROM world
+    WHERE continent = 'South America'
+   5
+   --Mostrar el y para Francia, Alemania, Italia name-population
+        SELECT name, population
+    FROM world
+    WHERE name in( 'France','Italy','Germany')
+	6
+	--Mostrar los países que tienen un que incluye la palabra 'United' name
+	 SELECT name
+    FROM world
+    WHERE name like '%United%'
+	7
+	--Dos formas de ser grande: Un país es grande si tiene una superficie de más de 3 millones de kilómetros cuadrados o tiene una población de más de 250 millones.
+	--Muestre los países que son grandes por superficie o grandes por población. Mostrar nombre, población y área.
+	    SELECT name,population,area
+    FROM world
+    WHERE area> 3000000 or population> 250000000
+	8
+	--Exclusivo OR (XOR). Muestre los países que son grandes por superficie (más de 3 millones) o grandes 
+	--por población (más de 250 millones), pero no por ambos. Mostrar nombre, población y área.
+	    SELECT name,population,area
+    FROM world
+    WHERE area> 3000000 xor population> 250000000
+	9
+	--
+	10
+	--
+	11
+	--
+	12
+	--
+	13
+	--
