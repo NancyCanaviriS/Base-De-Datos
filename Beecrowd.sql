@@ -224,7 +224,112 @@ GROUP BY amount -- or most_frequent_value
 ORDER BY COUNT(*) DESC
 LIMIT 1;
 
----
+--***************NIVEL 4**************
+
+---Basic Select
+SELECT name FROM customers WHERE LOWER(state) = 'rs' ;
+
+---Executive Representatives
+SELECT 
+	products.name,
+	providers.name
+FROM
+	products 
+	INNER JOIN providers 
+	ON products.id_providers = providers.id
+	INNER JOIN categories
+	ON products.id_categories = categories.id
+WHERE categories.id = 6;
+
+---Action Movies
+SELECT
+    movies.id,
+    movies.name
+FROM movies
+INNER JOIN genres
+    ON movies.id_genres = genres.id
+WHERE genres.description = 'Action';
+
+---Categories with Various Products
+SELECT
+    products.name,
+    categories.name
+FROM products
+INNER JOIN categories
+    ON products.id_categories = categories.id
+WHERE products.amount > 100
+    AND categories.id IN (1, 2, 3, 6, 9)
+ORDER BY categories.id ASC;
+
+---CPF Validation
+SELECT SUBSTR(natural_person.cpf, 1, 3) || '.' ||
+	   SUBSTR(natural_person.cpf, 4, 3) || '.' ||
+	   SUBSTR(natural_person.cpf, 7, 3) || '-' ||
+	   SUBSTR(natural_person.cpf, 10, 2) AS cpf
+FROM natural_person
+INNER JOIN customers
+    ON natural_person.id_customers = customers.id;
+
+---Contest
+SELECT
+    candidate.name,
+    ROUND((((score.math * 2)
+      	    + (score.specific * 3)
+      		+ (score.project_plan * 5))
+     	   / 10)
+		  , 2) AS avg
+FROM score
+INNER JOIN candidate
+    ON score.candidate_id = candidate.id
+ORDER BY avg DESC;
+
+---Cearense Championship
+SELECT
+    teams.name,
+    COUNT(matches.team_1 + matches.team_2) AS matches,
+    SUM(CASE WHEN (matches.team_1_goals > matches.team_2_goals
+                   AND teams.id = matches.team_1)
+                  OR (matches.team_2_goals > matches.team_1_goals
+                   AND teams.id = matches.team_2) THEN 1 ELSE 0 END) AS victories,
+                   
+    SUM(CASE WHEN (matches.team_1_goals < matches.team_2_goals
+                   AND teams.id = matches.team_1)
+                  OR (matches.team_2_goals < matches.team_1_goals
+                   AND teams.id = matches.team_2) THEN 1 ELSE 0 END) AS defeats,
+                   
+    SUM(CASE WHEN (matches.team_1_goals = matches.team_2_goals
+                   AND teams.id = matches.team_1)
+                  OR (matches.team_2_goals = matches.team_1_goals
+                   AND teams.id = matches.team_2) THEN 1 ELSE 0 END) AS draws,
+    
+	(SUM(CASE WHEN (matches.team_1_goals > matches.team_2_goals
+                    AND teams.id = matches.team_1)
+                   OR (matches.team_2_goals > matches.team_1_goals
+                    AND teams.id = matches.team_2) THEN 3 ELSE 0 END)
+	 +
+	 SUM(CASE WHEN (matches.team_1_goals = matches.team_2_goals
+                    AND teams.id = matches.team_1)
+                   OR (matches.team_2_goals = matches.team_1_goals
+                    AND teams.id = matches.team_2) THEN 1 ELSE 0 END)) AS score
+FROM matches
+INNER JOIN teams
+    ON matches.team_1 = teams.id
+    OR matches.team_2 = teams.id
+GROUP BY teams.name
+ORDER BY score DESC;
+
+---Employees CPF
+SELECT
+    empregados.cpf,
+    empregados.enome,
+    departamentos.dnome
+FROM empregados
+INNER JOIN departamentos
+    ON empregados.dnumero = departamentos.dnumero
+LEFT JOIN trabalha
+    ON empregados.cpf = trabalha.cpf_emp
+WHERE trabalha.cpf_emp IS NULL
+ORDER BY empregados.cpf;
 
 
 
