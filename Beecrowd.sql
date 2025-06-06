@@ -331,6 +331,87 @@ LEFT JOIN trabalha
 WHERE trabalha.cpf_emp IS NULL
 ORDER BY empregados.cpf;
 
+--****************NIVEL 5**************
+
+---September Rentals
+SELECT
+    customers.name,
+    rentals.rentals_date
+FROM rentals
+INNER JOIN customers
+    ON rentals.id_customers = customers.id
+WHERE rentals.rentals_date >= '2016-09-01' 
+	AND rentals.rentals_date < '2016-10-01';
+
+---No Rental
+SELECT
+    customers.id,
+    customers.name
+FROM customers
+LEFT JOIN locations 
+    ON customers.id = locations.id_customers
+WHERE locations IS NULL
+ORDER BY customers.id;
+
+--- League
+SELECT
+	'Podium: ' || team AS name
+FROM league
+WHERE position <= 3
+UNION ALL
+SELECT
+	'Demoted: ' || team AS name
+FROM league
+WHERE position IN (SELECT position
+				   FROM league
+				   ORDER BY position DESC
+				   LIMIT 2);
+
+---Students Grades
+SELECT
+    'Approved: ' || name AS name,
+	grade
+FROM students
+WHERE grade >= 7
+ORDER BY grade DESC;
+
+---Richard's Multiverse
+SELECT
+    life_registry.name,
+    ROUND((life_registry.omega * 1.618), 3) AS "The N Factor"
+FROM life_registry
+INNER JOIN dimensions
+    ON life_registry.dimensions_id = dimensions.id
+WHERE dimensions.name IN ('C875', 'C774')
+    AND LOWER(life_registry.name) LIKE 'richard%'
+ORDER BY life_registry.omega;
+
+---The Sensor Message
+WITH matching_temperatures AS (
+	SELECT
+		temperature,
+		COUNT(temperature) AS matching_count
+	FROM records
+	GROUP BY temperature, mark
+	ORDER BY mark
+)
+SELECT 
+    temperature,
+    matching_count AS number_of_records
+FROM matching_temperatures;
+
+---Products by Categories
+SELECT
+    categories.name,
+    SUM(products.amount)
+FROM products
+INNER JOIN categories
+    ON products.id_categories = categories.id
+GROUP BY categories.id
+ORDER BY categories.name;
+
+---
+
 
 
 
