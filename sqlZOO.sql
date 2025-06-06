@@ -122,55 +122,55 @@ FROM world
 WHERE capital like concat('%',name,'%') and capital >name
 
   --------------*** SELECT from World*****
-   1
+ 1
   --Observe el resultado de ejecutar este comando SQL para mostrar el nombre, el continente y la población de todos los países.
    SELECT name, continent,
    population FROM world
-   2
+ 2
   --Muestre el nombre de los países que tienen una población de al menos 200 millones de habitantes. 200 millones es 200000000, hay ocho ceros.
   SELECT name 
   FROM world
   WHERE population >= 200000000
-  3
+3
    --Give the and the per capita GDP países con una población de al menos 200 millones. namepopulation
     SELECT name, GDP/population 
     FROM world
     WHERE population >= 200000000
-   4
+4
    --Mostrar el y en millones para los países de la 'South America'. 
    --Divida la población por 1000000 para obtener la población en millones. name-population-
        SELECT name, population/1000000
     FROM world
     WHERE continent = 'South America'
-   5
+5
    --Mostrar el y para Francia, Alemania, Italia name-population
         SELECT name, population
     FROM world
     WHERE name in( 'France','Italy','Germany')
-	6
+6
 	--Mostrar los países que tienen un que incluye la palabra 'United' name
 	 SELECT name
     FROM world
     WHERE name like '%United%'
-	7
+7
 	--Dos formas de ser grande: Un país es grande si tiene una superficie de más de 3 millones de kilómetros cuadrados o tiene una población de más de 250 millones.
 	--Muestre los países que son grandes por superficie o grandes por población. Mostrar nombre, población y área.
 	    SELECT name,population,area
     FROM world
     WHERE area> 3000000 or population> 250000000
-	8
+8
 	--Exclusivo OR (XOR). Muestre los países que son grandes por superficie (más de 3 millones) o grandes 
 	--por población (más de 250 millones), pero no por ambos. Mostrar nombre, población y área.
 	    SELECT name,population,area
     FROM world
     WHERE area> 3000000 xor population> 250000000
-	9
+9
 	--Muestre el y en millones y el GDP en miles de millones para los países de la 'South America'.
 	--Utilice la función REDONDEAR para mostrar los valores con dos decimales. name-population-continent
 		select name,round(population/1000000,2) ,round(GDP/1000000000,2)
     from world
 	where continent = 'South America'
-	10
+10
 	--Muestra el GDP per cápita de aquellos países con un PIB de al menos un billón (1000000000000; es decir, 12 ceros). 
 	--Redondee este valor al 1000 más cercano. name
 	SELECT name, round(GDP/population,-3) 
@@ -710,7 +710,99 @@ WHERE question='Q01'
 AND institution LIKE '%Manchester%'
 GROUP BY institution
 
+ --------------***Window functions**********
+ 1
+ --ar el apellido, el partido y los votos de la circunscripción 'S14000024' en 2017.
+ SELECT lastName, party, votes
+  FROM ge
+ WHERE constituency = 'S14000024' AND yr = 2017
+ORDER BY votes DESC
+2
+--Muestre el partido y el RANK para el S14000024 de circunscripción en 2017. Enumerar la salida por parte
+SELECT party, votes,
+       RANK() OVER (ORDER BY votes DESC) as posn
+  FROM ge
+ WHERE constituency = 'S14000024 ' AND yr = 2017
+ORDER BY party
 
+3
+--Utilice PARTITION BY circunscripción para mostrar la clasificación de cada partido 
+--en Edimburgo en 2017. Ordene sus resultados para que los ganadores se muestren primero, 
+--luego ordenados por circunscripción.
+SELECT yr,party, votes,
+      RANK() OVER (PARTITION BY yr ORDER BY votes DESC) as posn
+  FROM ge
+ WHERE constituency = 'S14000021'
+ORDER BY party,yr
+4
+--Utilice PARTITION BY circunscripción para mostrar la clasificación de cada partido en 
+--Edimburgo en 2017. Ordene sus resultados para que los ganadores se muestren primero, 
+--luego ordenados por circunscripción.
+SELECT constituency, party, votes, RANK() OVER(PARTITION BY constituency ORDER BY votes DESC)
+FROM ge
+WHERE yr = '2017'
+AND constituency BETWEEN 'S14000021' AND 'S14000026'
+ORDER BY 4, 1;
+5
+--Muestre los partidos que ganaron en cada circunscripción de Edimburgo en 2017.
+SELECT constituency, party
+FROM (SELECT constituency, party, 
+      RANK() OVER(PARTITION BY constituency ORDER BY votes DESC) AS rank 
+      FROM ge WHERE yr = '2017' 
+      AND constituency BETWEEN 'S14000021' AND 'S14000026') AS ge_rank
+WHERE rank = '1';
+
+----------*********Window_LAG***********
+1
+--Modificar la consulta para mostrar datos de España
+SELECT name, DAY(whn),
+ confirmed, deaths, recovered
+ FROM covid
+WHERE name = 'Spain'
+AND MONTH(whn) = 3 AND YEAR(whn) = 2020
+ORDER BY whn
+2
+--La función LAG se utiliza para mostrar los datos de la 
+--fila anterior o de la tabla. Al alinear filas, los datos 
+--se particionan por nombre de país y se ordenan por los datos whn. 
+--Eso significa que solo se consideran los datos de Italia.
+SELECT name, DAY(whn),confirmed,
+   LAG(confirmed, 1) OVER (PARTITION BY name ORDER BY whn)
+ FROM covid
+WHERE name = 'Italy'
+AND MONTH(whn) = 3 AND YEAR(whn) = 2020
+ORDER BY whn
+3
+--El número de casos confirmados es acumulativo, 
+--pero podemos utilizar el LAG para recuperar el número de nuevos casos notificados cada día.
+SELECT 
+    name,
+    DAY(whn),
+    (confirmed - LAG(confirmed, 1) OVER (PARTITION BY name ORDER BY whn)) 
+FROM covid
+WHERE name = 'Italy'
+AND MONTH(whn) = 3 
+AND YEAR(whn) = 2020
+ORDER BY whn
+4
+--Mostrar el número de casos nuevos en Italia para cada semana
+--en 2020 - mostrar solo el lunes.
+SELECT name, DATE_FORMAT(whn,'%Y-%m-%d'), 
+ (confirmed - LAG(confirmed, 1) OVER (PARTITION BY name ORDER BY whn)) 
+ FROM covid
+WHERE name = 'Italy'
+AND WEEKDAY(whn) = 0 AND YEAR(whn) = 2020
+ORDER BY whn
+6
+--Agregue una columna para mostrar la clasificación del número de muertes por COVID.
+SELECT 
+   name,
+   confirmed,
+   RANK() OVER (ORDER BY confirmed DESC) rc,
+   deaths,RANK()OVER (ORDER BY deaths DESC)
+  FROM covid
+WHERE whn = '2020-04-20'
+ORDER BY confirmed DESC
 
 
 
