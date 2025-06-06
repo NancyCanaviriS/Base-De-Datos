@@ -175,4 +175,94 @@ WHERE capital like concat('%',name,'%') and capital >name
 	--Redondee este valor al 1000 más cercano. name
 	SELECT name, round(GDP/population,-3) 
     FROM world
-    WHERE gdp>= 1000000000000
+    WHERE gdp>= 
+	
+--------------***SELECT from Nobel*****
+
+1
+--Cambie la consulta que se muestra para que muestre los premios Nobel de 1950.
+SELECT yr, subject, winner
+  FROM nobel
+ WHERE yr = 1950
+
+2
+--Mostrar quién ganó el premio de literatura en 1962.
+SELECT winner
+  FROM nobel
+ WHERE yr = 1962
+   AND subject = 'Literature'
+3
+--Muestra el año y el tema que le valió el premio a 'Albert Einstein'.
+
+SELECT yr, subject
+  FROM nobel
+WHERE winner = 'Albert Einstein'
+4
+--Mencione el nombre de los ganadores de la "paz" desde el año 2000, incluido el 2000.
+SELECT winner
+FROM nobel
+WHERE subject = 'Peace' AND yr >= 2000
+5
+--SMostrar todos los detalles (año, tema, ganador) de los
+--ganadores del Premio de Literatura de 1980 a 1989 inclusive.
+SELECT *
+  FROM nobel
+WHERE yr>=1980 and yr<=1989
+and subject ='Literature'
+6
+--SMostrar todos los detalles de los ganadores presidenciales:
+--Theodore Roosevelt
+--Thomas Woodrow Wilson
+--Jimmy Carter
+--Barack Obama
+SELECT * FROM nobel
+ WHERE winner IN ('Theodore Roosevelt',
+                  'Thomas Woodrow Wilson',
+                  'Jimmy Carter','Barack Obama')
+7
+--Mostrar los ganadores con el nombre de pila John
+SELECT winner FROM nobel
+  WHERE winner LIKE 'JOHN %'
+8
+--Muestre el año, la materia y el nombre de los ganadores
+--de física de 1980 junto con los ganadores de química de 1984.
+SELECT * FROM nobel
+  WHERE yr = 1980 AND subject = 'Physics'
+     OR yr = 1984 AND subject = 'Chemistry'
+9
+--Muestre el año, el tema y el nombre de los ganadores de 1980, excluyendo química y medicina.
+SELECT * FROM nobel
+  WHERE yr = 1980
+    AND subject NOT IN ('Chemistry','Medicine')
+10
+--Muestre el año, el tema y el nombre de las personas que ganaron un 
+--premio de "Medicina" en un año temprano (antes de 1910, sin incluir 1910) 
+--junto con los ganadores de un premio de "Literatura" en un año posterior 
+--(después de 2004, incluido 2004)
+SELECT * FROM nobel
+  WHERE yr < 1910 AND subject = 'Medicine'
+     OR yr >= 2004 AND subject = 'Literature'
+
+--Harder Questions
+11
+--Encuentra todos los detalles del premio ganado por PETER GRÜNBERG
+SELECT * FROM nobel
+  WHERE winner = 'Peter Grünberg'
+12
+--Encuentra todos los detalles del premio ganado por EUGENE O'NEILL
+SELECT * FROM nobel
+  WHERE winner = 'Eugene O''Neill'
+13
+--Enumere los ganadores, el año y el tema donde el ganador comienza con Sir. 
+--Muestre primero el más reciente y luego por orden de nombre.
+SELECT winner, yr, subject FROM nobel
+  WHERE winner LIKE 'Sir %'
+  ORDER BY yr DESC, winner
+14
+--La expresión sujeto IN ('química', 'física') se puede usar como un valor: será 0 o 1.
+--Muestre los ganadores de 1984 y el tema ordenados por tema y nombre del ganador; 
+--Pero la química y la física son las últimas.
+SELECT winner, subject
+  FROM nobel
+ WHERE yr=1984
+ ORDER BY subject in ('Chemistry','Physics'), subject, winner
