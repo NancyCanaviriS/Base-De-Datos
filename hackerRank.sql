@@ -173,5 +173,26 @@ from COUNTRY
 JOIN CITY ON CITY.CountryCode=COUNTRY.Code
 where COUNTRY.continent='Asia'
 
+---African Cities
+---Given the CITY and COUNTRY tables, query the names of all cities where the CONTINENT is 'Africa'.
+select city.name
+from city
+join COUNTRY ON CITY.CountryCode=COUNTRY.Code
+where COUNTRY.CONTINENT = 'Africa';
+
+---Average Population of Each Continent
+---Given the CITY and COUNTRY tables, query the names of all the continents (COUNTRY.Continent) 
+--and their respective average city populations (CITY.Population) rounded down to the nearest integer.
+SELECT 
+    COUNTRY.CONTINENT,
+    FLOOR(AVG(CITY.POPULATION)) 
+FROM 
+    CITY
+JOIN 
+    COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE
+GROUP BY 
+    COUNTRY.CONTINENT;
+
+
 
 
