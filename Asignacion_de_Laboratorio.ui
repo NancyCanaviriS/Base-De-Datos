@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>830</width>
+    <height>704</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+QMainWindow {
+    background-color: #F8F9FA;
+}
+
+QLabel {
+    color: #343A40;
+    font-family: Arial;
+}
+
+QPushButton {
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 10px;
+    border-radius: 4px;
+    padding: 8px 15px;
+    height: 35px;
+}
+
+QPushButton:hover {
+    opacity: 0.8;
+}
+
+QPushButton:pressed {
+    opacity: 0.6;
+}
+
+.btn-primary {
+    background-color: #2567B3;
+    color: white;
+    border: none;
+}
+
+.btn-success {
+    background-color: #28A745;
+    color: white;
+    border: none;
+}
+
+.btn-warning {
+    background-color: #FFC107;
+    color: #212529;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #DC3545;
+    color: white;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: #6C757D;
+    color: white;
+    border: none;
+}
+
+QComboBox, QLineEdit, QSpinBox {
+    font-family: Arial;
+    font-size: 10px;
+    padding: 8px;
+    border: 1px solid #CED4DA;
+    border-radius: 4px;
+    background-color: white;
+}
+
+QComboBox:focus, QLineEdit:focus, QSpinBox:focus {
+    border-color: #2567B3;
+    outline: none;
+}
+
+QTableWidget {
+    gridline-color: #DEE2E6;
+    background-color: white;
+    selection-background-color: #E3F2FD;
+    font-family: Arial;
+    font-size: 9px;
+}
+
+QTableWidget::item {
+    padding: 5px;
+    border-bottom: 1px solid #DEE2E6;
+}
+
+QTableWidget::item:selected {
+    background-color: #E3F2FD;
+    color: #212529;
+}
+
+QHeaderView::section {
+    background-color: #F8F9FA;
+    border: 1px solid #DEE2E6;
+    font-weight: bold;
+    padding: 8px;
+}
+
+QScrollBar:vertical {
+    background-color: #F8F9FA;
+    width: 12px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #CED4DA;
+    border-radius: 6px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #ADB5BD;
+}
+
+QGroupBox {
+    font-weight: bold;
+    font-size: 11px;
+    border: 2px solid #DEE2E6;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 10px 0 10px;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>100</y>
+      <width>751</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="whatsThis">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">/* Pestañas del selector */
+QTabWidget::pane {
+    border: 2px solid #2567B3;
+    border-radius: 10px;
+    background-color: white;
+    margin-top: 10px;
+}
+
+QTabWidget::tab-bar {
+    alignment: center;
+}
+
+QTabBar::tab {
+    background-color: #F0F4F8;
+    color: #6e6e6e;
+    padding: 12px 25px;
+    margin: 2px;
+    border: 2px solid #2567B3;
+    border-bottom: none;
+    border-radius: 8px 8px 0px 0px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+QTabBar::tab:selected {
+    background-color: #2567B3;
+    color: white;
+    font-weight: bold;
+}
+
+QTabBar::tab:hover:!selected {
+    background-color: #6FA8DC;
+    color: white;
+}</string>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::TabPosition::North</enum>
+    </property>
+    <property name="tabShape">
+     <enum>QTabWidget::TabShape::Rounded</enum>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <property name="elideMode">
+     <enum>Qt::TextElideMode::ElideNone</enum>
+    </property>
+    <property name="documentMode">
+     <bool>false</bool>
+    </property>
+    <property name="movable">
+     <bool>false</bool>
+    </property>
+    <property name="tabBarAutoHide">
+     <bool>false</bool>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>asignacion automatica</string>
+     </attribute>
+     <widget class="QPushButton" name="editarHorario">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>370</y>
+        <width>191</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton#editarHorario {
+    background-color: #2567B3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 30px;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+QPushButton#editarHorario:hover {
+    background-color: #1E5A9A;
+}
+
+QPushButton#editarHorario:pressed {
+    background-color: #154A87;
+}</string>
+      </property>
+      <property name="text">
+       <string>Editar Horario</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="GuardarAsignacion">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>370</y>
+        <width>241</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton#GuardarAsignacion {
+    background-color: #2567B3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 30px;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+QPushButton#GuardarAsignacion:hover {
+    background-color: #1E5A9A;
+}
+
+QPushButton#GuardarAsignacion:pressed {
+    background-color: #154A87;
+}</string>
+      </property>
+      <property name="text">
+       <string>Guardar Asignacion </string>
+      </property>
+     </widget>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>691</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="value">
+       <number>24</number>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="AsignarHorario">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>201</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton#AsignarHorario {
+    background-color: #2567B3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 30px;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+QPushButton#AsignarHorario:hover {
+    background-color: #1E5A9A;
+}
+
+QPushButton#AsignarHorario:pressed {
+    background-color: #154A87;
+}</string>
+      </property>
+      <property name="text">
+       <string>Asignar Horario</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>120</y>
+        <width>641</width>
+        <height>241</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QTableWidget" name="tableWidget">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(0, 0, 0);</string>
+         </property>
+         <row>
+          <property name="text">
+           <string>1.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>2.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>5.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>4.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>5.</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>6.</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Nombres y Apellidos</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Materia</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Semestre</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Grupo</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="background">
+           <brush brushstyle="NoBrush">
+            <color alpha="255">
+             <red>0</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>60</y>
+        <width>241</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Cargando......</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="widget">
+     <attribute name="title">
+      <string>asignacion de horarios</string>
+     </attribute>
+     <widget class="QLabel" name="labelGrupo">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>40</y>
+        <width>166</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel#labelGrupo {
+    color: #111827;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5px;
+}</string>
+      </property>
+      <property name="text">
+       <string>GRUPO:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelHorario">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>40</y>
+        <width>168</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel#labelHorario {
+    color: #111827;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5px;
+}</string>
+      </property>
+      <property name="text">
+       <string>HORARIO:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboMateria_2">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>60</y>
+        <width>168</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QComboBox {
+    border: 2px solid #2567B3;
+    border-radius: 6px;
+    padding: 8px 12px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+QComboBox::drop-down {
+    border: none;
+    background-color: #2567B3;
+    border-radius: 4px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid white;
+    margin: 0px 5px;
+}
+
+QComboBox QAbstractItemView {
+    border: 2px solid #2567B3;
+    background-color: white;
+    selection-background-color: #6FA8DC;
+}</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Seleccionar Grupo</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="comboMateria_3">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>60</y>
+        <width>168</width>
+        <height>38</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QComboBox {
+    border: 2px solid #2567B3;
+    border-radius: 6px;
+    padding: 8px 12px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+QComboBox::drop-down {
+    border: none;
+    background-color: #2567B3;
+    border-radius: 4px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid white;
+    margin: 0px 5px;
+}
+
+QComboBox QAbstractItemView {
+    border: 2px solid #2567B3;
+    background-color: white;
+    selection-background-color: #6FA8DC;
+}</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Seleccionar Horario</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QPushButton" name="Aceptar">
+      <property name="geometry">
+       <rect>
+        <x>414</x>
+        <y>420</y>
+        <width>131</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton#Aceptar {
+    background-color: #2567B3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+QPushButton#Aceptar:hover {
+    background-color: #1E5A9A;
+}
+
+QPushButton#Aceptar:pressed {
+    background-color: #154A87;
+}</string>
+      </property>
+      <property name="text">
+       <string>Aceptar  </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Cancelar">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>420</y>
+        <width>111</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton#Cancelar {
+    background-color: #2567B3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+QPushButton#Cancelar:hover {
+    background-color: #1E5A9A;
+}
+
+QPushButton#Cancelar:pressed {
+    background-color: #154A87;
+}</string>
+      </property>
+      <property name="text">
+       <string>Cancelar</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelMateria">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>30</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel#labelMateria {
+    color: #111827;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5px;
+}</string>
+      </property>
+      <property name="text">
+       <string>MATERIA:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboMateria">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>60</y>
+        <width>171</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QComboBox {
+    border: 2px solid #2567B3;
+    border-radius: 6px;
+    padding: 8px 12px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+QComboBox::drop-down {
+    border: none;
+    background-color: #2567B3;
+    border-radius: 4px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid white;
+    margin: 0px 5px;
+}
+
+QComboBox QAbstractItemView {
+    border: 2px solid #2567B3;
+    background-color: white;
+    selection-background-color: #6FA8DC;
+}</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Seleccionar Materia</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>120</y>
+        <width>671</width>
+        <height>301</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QTableWidget" name="Horario">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(0, 0, 0);</string>
+         </property>
+         <row>
+          <property name="text">
+           <string>8:30 - 10:00</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>10:30 - 12:00</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>14:30 - 16:00</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>16:30 - 18:00</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>18:30 - 20:00</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string/>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>Lunes</string>
+          </property>
+          <property name="background">
+           <color>
+            <red>197</red>
+            <green>205</green>
+            <blue>255</blue>
+           </color>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Martes</string>
+          </property>
+          <property name="background">
+           <color>
+            <red>197</red>
+            <green>205</green>
+            <blue>255</blue>
+           </color>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Miercoles </string>
+          </property>
+          <property name="background">
+           <color>
+            <red>197</red>
+            <green>205</green>
+            <blue>255</blue>
+           </color>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Jueves</string>
+          </property>
+          <property name="background">
+           <color>
+            <red>197</red>
+            <green>205</green>
+            <blue>255</blue>
+           </color>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Viernes</string>
+          </property>
+          <property name="background">
+           <color>
+            <red>197</red>
+            <green>205</green>
+            <blue>255</blue>
+           </color>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Sabado</string>
+          </property>
+          <property name="background">
+           <color>
+            <red>197</red>
+            <green>205</green>
+            <blue>255</blue>
+           </color>
+          </property>
+         </column>
+         <item row="2" column="2">
+          <property name="text">
+           <string/>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="inicio">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>171</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#inicio {
+    background-color: #2567B3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 30px;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+QPushButton#inicio:hover {
+    background-color: #1E5A9A;
+}
+
+QPushButton#inicio:pressed {
+    background-color: #154A87;
+}</string>
+    </property>
+    <property name="text">
+     <string>volver a inicio</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="titleLabel">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>0</y>
+      <width>451</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>-1</pointsize>
+      <bold>true</bold>
+      <underline>true</underline>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 28px; 
+font-weight: bold; 
+color: #111827; 
+margin: 20px 0px;
+padding: 15px;</string>
+    </property>
+    <property name="text">
+     <string> Asignar Laboratorios</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radio">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>90</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="conflictos">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>70</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#conflictos {
+    background-color: #2567B3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+QPushButton#conflictos:hover {
+    background-color: #1E5A9A;
+}
+
+QPushButton#conflictos:pressed {
+    background-color: #154A87;
+}</string>
+    </property>
+    <property name="text">
+     <string>Conflictos</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>830</width>
+     <height>33</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
